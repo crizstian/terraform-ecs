@@ -349,10 +349,9 @@ module "alb" {
   }
 
   listeners = {
-    ex_http = {
-      port     = 80
+    ex-tcp = {
+      port     = 83
       protocol = "TCP"
-
       forward = {
         target_group_key = "ex_ecs"
       }
