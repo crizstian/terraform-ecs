@@ -397,8 +397,8 @@ module "vpc" {
 }
 
 resource "harness_platform_environment" "example" {
-  identifier = "dev-test"
-  name       = "dev-test"
+  identifier = "dev_test"
+  name       = "dev_test"
   tags       = ["foo:bar", "bar:foo"]
   type       = "PreProduction"
   description = "env description"
@@ -409,8 +409,8 @@ resource "harness_platform_environment" "example" {
 
   yaml = <<-EOT
     environment:
-      name: dev-test
-      identifier: dev-test
+      name: dev_test
+      identifier: dev_test
       tags: {}
       type: PreProduction
       orgIdentifier: cristian_labs_MQTH
