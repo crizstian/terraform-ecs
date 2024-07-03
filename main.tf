@@ -359,14 +359,14 @@ output "cluster_autoscaling_capacity_providers" {
 
 
 output "lb_arn" {
-  value = module.vpc.lb_arn
+  value = module.alb.arn
 }
 output "lb_id" {
-  value = module.vpc.lb_id
+  value = module.alb.id
 }
 output "lb_security_group_arn" {
-  value = module.vpc.lb_security_group_arn
+  value = module.alb.security_group_arn
 }
 output "lb_security_group_id" {
-  value = module.vpc.lb_security_group_id
+  value = module.alb.security_group_id
 }
