@@ -54,6 +54,20 @@ module "ecs_cluster" {
       }
     }
   }
+  
+  create_task_exec_iam_role = true
+
+  task_exec_iam_role_name        = "${var.cluster_name}-tasks"
+  task_exec_iam_role_description = "Example tasks IAM role for ${var.cluster_name}"
+  task_exec_iam_role_policies = {
+    ReadOnlyAccess = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  }
+  task_exec_iam_statements = [
+    {
+      actions   = ["s3:List*"]
+      resources = ["arn:aws:s3:::*"]
+    }
+  ]
 
   tags = local.tags
 }
