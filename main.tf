@@ -5,6 +5,15 @@ variable "vpc_cidr" {}
 
 data "aws_availability_zones" "available" {}
 
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 
 locals {
   # region = "eu-west-1"
