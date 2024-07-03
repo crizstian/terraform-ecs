@@ -365,7 +365,7 @@ module "alb" {
     ex-target = {
       protocol                  = "TCP"
       port                      = 80
-      target_type                       = "instance"
+      target_type               = "ip"
 
       health_check = {
         port                = "traffic-port"
