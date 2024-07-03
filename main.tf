@@ -318,66 +318,66 @@ module "ecs_cluster" {
 # Supporting Resources
 ################################################################################
 
-# module "alb" {
-#   source  = "terraform-aws-modules/alb/aws"
-#   version = "~> 9.0"
+module "alb" {
+  source  = "terraform-aws-modules/alb/aws"
+  version = "~> 9.0"
 
-#   name = var.lb_name
+  name = var.lb_name
 
-#   load_balancer_type = "network"
+  load_balancer_type = "network"
 
-#   vpc_id  = module.vpc.vpc_id
-#   subnets = module.vpc.public_subnets
+  vpc_id  = module.vpc.vpc_id
+  subnets = module.vpc.public_subnets
 
-#   # For example only
-#   enable_deletion_protection = false
+  # For example only
+  enable_deletion_protection = false
 
-#   # security_groups = []
+  # security_groups = []
 
-#   # Security Group
-#   security_group_ingress_rules = {
-#     all = {
-#       ip_protocol = "-1"
-#       cidr_ipv4   = module.vpc.vpc_cidr_block
-#     }
-#   }
-#   security_group_egress_rules = {
-#     all = {
-#       ip_protocol = "-1"
-#       cidr_ipv4   = module.vpc.vpc_cidr_block
-#     }
-#   }
+  # Security Group
+  security_group_ingress_rules = {
+    all = {
+      ip_protocol = "-1"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+  security_group_egress_rules = {
+    all = {
+      ip_protocol = "-1"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
 
-#   listeners = {
-#     ex_http = {
-#       port     = 80
-#       protocol = "TCP"
+  listeners = {
+    ex_http = {
+      port     = 80
+      protocol = "TCP"
 
-#       forward = {
-#         target_group_key = "ex_ecs"
-#       }
-#     }
-#   }
+      forward = {
+        target_group_key = "ex_ecs"
+      }
+    }
+  }
 
-#   target_groups = {
-#     ex_ecs = {
-#       backend_protocol                  = "TCP"
-#       backend_port                      = 80
-#       target_type                       = "instance"
+  target_groups = {
+    ex_ecs = {
+      backend_protocol                  = "TCP"
+      backend_port                      = 80
+      target_type                       = "instance"
 
-#       health_check = {
-#         port                = "traffic-port"
-#         protocol            = "TCP"
-#       }
+      health_check = {
+        port                = "traffic-port"
+        protocol            = "TCP"
+      }
 
-#       # There's nothing to attach here in this definition. Instead,
-#       # ECS will attach the IPs of the tasks to this target group
-#       create_attachment = false
-#     }
-#   }
+      # There's nothing to attach here in this definition. Instead,
+      # ECS will attach the IPs of the tasks to this target group
+      create_attachment = false
+    }
+  }
 
-#   tags = local.tags
-# }
+  tags = local.tags
+}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -437,21 +437,21 @@ output "ecs_instance_profile_name" {
   value       = aws_iam_instance_profile.ecs_instance_profile.name
 }
 
-# output "lb_arn" {
-#   value = module.alb.arn
-# }
-# output "lb_id" {
-#   value = module.alb.id
-# }
-# output "lb_security_group_arn" {
-#   value = module.alb.security_group_arn
-# }
-# output "lb_security_group_id" {
-#   value = module.alb.security_group_id
-# }
-# output "lb_target_groups" {
-#   value = module.alb.target_groups
-# }
+output "lb_arn" {
+  value = module.alb.arn
+}
+output "lb_id" {
+  value = module.alb.id
+}
+output "lb_security_group_arn" {
+  value = module.alb.security_group_arn
+}
+output "lb_security_group_id" {
+  value = module.alb.security_group_id
+}
+output "lb_target_groups" {
+  value = module.alb.target_groups
+}
 
 output "vpc_id"  {
   value = module.vpc.vpc_id
