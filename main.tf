@@ -364,11 +364,6 @@ module "alb" {
       backend_port                      = 80
       target_type                       = "instance"
 
-      health_check = {
-        port                = "traffic-port"
-        protocol            = "TCP"
-      }
-
       # There's nothing to attach here in this definition. Instead,
       # ECS will attach the IPs of the tasks to this target group
       create_attachment = false
