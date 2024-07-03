@@ -437,21 +437,21 @@ output "ecs_instance_profile_name" {
   value       = aws_iam_instance_profile.ecs_instance_profile.name
 }
 
-output "lb_arn" {
-  value = module.alb.arn
-}
-output "lb_id" {
-  value = module.alb.id
-}
-output "lb_security_group_arn" {
-  value = module.alb.security_group_arn
-}
-output "lb_security_group_id" {
-  value = module.alb.security_group_id
-}
-output "lb_target_groups" {
-  value = module.alb.target_groups
-}
+# output "lb_arn" {
+#   value = module.alb.arn
+# }
+# output "lb_id" {
+#   value = module.alb.id
+# }
+# output "lb_security_group_arn" {
+#   value = module.alb.security_group_arn
+# }
+# output "lb_security_group_id" {
+#   value = module.alb.security_group_id
+# }
+# output "lb_target_groups" {
+#   value = module.alb.target_groups
+# }
 
 output "vpc_id"  {
   value = module.vpc.vpc_id
