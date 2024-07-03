@@ -353,16 +353,21 @@ module "alb" {
       port     = 83
       protocol = "TCP"
       forward = {
-        target_group_key = "ex_ecs"
+        target_group_key = "ex-target"
       }
     }
   }
 
   target_groups = {
-    ex_ecs = {
-      backend_protocol                  = "TCP"
-      backend_port                      = 80
+    ex-target = {
+      protocol                  = "TCP"
+      port                      = 80
       target_type                       = "instance"
+
+      health_check = {
+        port                = "traffic-port"
+        protocol            = "TCP"
+      }
 
       # There's nothing to attach here in this definition. Instead,
       # ECS will attach the IPs of the tasks to this target group
