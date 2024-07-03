@@ -9,7 +9,10 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 4.0"
+    }
+    harness = {
+      source  = "harness/harness"
     }
   }
 }
@@ -394,6 +397,53 @@ module "vpc" {
   tags = local.tags
 }
 
+resource "harness_platform_environment" "example" {
+  identifier = "dev-test"
+  name       = "dev-test"
+  tags       = ["foo:bar", "bar:foo"]
+  type       = "PreProduction"
+  description = "env description"
+
+  ## ENVIRONMENT V2 Update
+  ## The YAML is needed if you want to define the Environment Variables and Overrides for the environment
+  ## Not Mandatory for Environment Creation nor Pipeline Usage
+
+  yaml = <<-EOT
+    environment:
+      name: dev-test
+      identifier: dev-test
+      tags: {}
+      type: PreProduction
+      orgIdentifier: cristian_labs_MQTH
+      projectIdentifier: infrastructure_team_MQTH
+  EOT
+}
+
+resource "harness_platform_infrastructure" "example" {
+  identifier      = var.cluster_name
+  name            = var.cluster_name
+  org_id          = "cristian_labs_MQTH"
+  project_id      = "infrastructure_team_MQTH"
+  env_id          = harness_platform_environment.example.identifier
+  type            = "ECS"
+  deployment_type = "ECS"
+  yaml            = <<-EOT
+    infrastructureDefinition:
+      name: ${var.cluster_name}
+      identifier: ${var.cluster_name}
+      orgIdentifier: cristian_labs_MQTH
+      projectIdentifier: infrastructure_team_MQTH
+      environmentRef: ${harness_platform_environment.example.identifier}
+      deploymentType: ECS
+      type: ECS
+      spec:
+        connectorRef: account.cristian_aws_aws_connector_MQTH
+        region: us-east-2
+        cluster: ${var.cluster_name}
+      allowSimultaneousDeployments: false
+      EOT
+}
+
 
 output "cluster_arn" {
   description = "ARN that identifies the cluster"
@@ -457,3 +507,5 @@ output "vpc_id"  {
 output "subnets" {
   value = module.vpc.public_subnets
 }
+
+
