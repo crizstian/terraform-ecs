@@ -244,85 +244,75 @@ module "ecs_cluster" {
 # Supporting Resources
 ################################################################################
 
-# data "aws_ssm_parameter" "fluentbit" {
-#   name = "/aws/service/aws-for-fluent-bit/stable"
-# }
+module "alb" {
+  source  = "terraform-aws-modules/alb/aws"
+  version = "~> 9.0"
 
-# resource "aws_service_discovery_http_namespace" "this" {
-#   name        = local.name
-#   description = "CloudMap namespace for ${local.name}"
-#   tags        = local.tags
-# }
+  name = var.lb_name
 
-# module "alb" {
-#   source  = "terraform-aws-modules/alb/aws"
-#   version = "~> 9.0"
+  load_balancer_type = "application"
 
-#   name = var.lb_name
+  vpc_id  = module.vpc.vpc_id
+  subnets = module.vpc.public_subnets
 
-#   load_balancer_type = "application"
+  # For example only
+  enable_deletion_protection = false
 
-#   vpc_id  = module.vpc.vpc_id
-#   subnets = module.vpc.public_subnets
+  # security_groups = []
 
-#   # For example only
-#   enable_deletion_protection = false
+  # Security Group
+  security_group_ingress_rules = {
+    all = {
+      ip_protocol = "-1"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+  security_group_egress_rules = {
+    all = {
+      ip_protocol = "-1"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
 
-#   # Security Group
-#   security_group_ingress_rules = {
-#     all_http = {
-#       from_port   = 80
-#       to_port     = 80
-#       ip_protocol = "tcp"
-#       cidr_ipv4   = "0.0.0.0/0"
-#     }
-#   }
-#   security_group_egress_rules = {
-#     all = {
-#       ip_protocol = "-1"
-#       cidr_ipv4   = module.vpc.vpc_cidr_block
-#     }
-#   }
+  # listeners = {
+  #   ex_http = {
+  #     port     = 80
+  #     protocol = "HTTP"
 
-#   listeners = {
-#     ex_http = {
-#       port     = 80
-#       protocol = "HTTP"
+  #     forward = {
+  #       target_group_key = "ex_ecs"
+  #     }
+  #   }
+  # }
 
-#       forward = {
-#         target_group_key = "ex_ecs"
-#       }
-#     }
-#   }
+  # target_groups = {
+  #   ex_ecs = {
+  #     backend_protocol                  = "HTTP"
+  #     backend_port                      = local.container_port
+  #     target_type                       = "ip"
+  #     deregistration_delay              = 5
+  #     load_balancing_cross_zone_enabled = true
 
-#   target_groups = {
-#     ex_ecs = {
-#       backend_protocol                  = "HTTP"
-#       backend_port                      = local.container_port
-#       target_type                       = "ip"
-#       deregistration_delay              = 5
-#       load_balancing_cross_zone_enabled = true
+  #     health_check = {
+  #       enabled             = true
+  #       healthy_threshold   = 5
+  #       interval            = 30
+  #       matcher             = "200"
+  #       path                = "/"
+  #       port                = "traffic-port"
+  #       protocol            = "HTTP"
+  #       timeout             = 5
+  #       unhealthy_threshold = 2
+  #     }
 
-#       health_check = {
-#         enabled             = true
-#         healthy_threshold   = 5
-#         interval            = 30
-#         matcher             = "200"
-#         path                = "/"
-#         port                = "traffic-port"
-#         protocol            = "HTTP"
-#         timeout             = 5
-#         unhealthy_threshold = 2
-#       }
+  #     # There's nothing to attach here in this definition. Instead,
+  #     # ECS will attach the IPs of the tasks to this target group
+  #     create_attachment = false
+  #   }
+  # }
 
-#       # There's nothing to attach here in this definition. Instead,
-#       # ECS will attach the IPs of the tasks to this target group
-#       create_attachment = false
-#     }
-#   }
-
-#   tags = local.tags
-# }
+  tags = local.tags
+}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -365,4 +355,18 @@ output "cluster_capacity_providers" {
 output "cluster_autoscaling_capacity_providers" {
   description = "Map of capacity providers created and their attributes"
   value       = module.ecs_cluster.autoscaling_capacity_providers
+}
+
+
+output "lb_arn" {
+  value = module.vpc.lb_arn
+}
+output "lb_id" {
+  value = module.vpc.lb_id
+}
+output "lb_security_group_arn" {
+  value = module.vpc.lb_security_group_arn
+}
+output "lb_security_group_id" {
+  value = module.vpc.lb_security_group_id
 }
