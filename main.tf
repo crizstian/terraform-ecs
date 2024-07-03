@@ -461,3 +461,10 @@ output "lb_security_group_id" {
 output "lb_target_groups" {
   value = module.alb.target_groups
 }
+
+output "vpc_id"  {
+  value = module.vpc.vpc_id
+}
+output "subnets" {
+  value = module.vpc.public_subnets
+}
