@@ -431,21 +431,20 @@ output "cluster_autoscaling_capacity_providers" {
   value       = module.ecs_cluster.autoscaling_capacity_providers
 }
 
-output "task_exec_iam_role_name" {
-  description = "Task execution IAM role name"
-  value       = module.ecs_cluster.task_exec_iam_role_name
+output "ecs_task_role_arn" {
+  description = "ECS Task Role ARN"
+  value       = aws_iam_role.ecs_task_role.arn
 }
 
-output "task_exec_iam_role_arn" {
-  description = "Task execution IAM role ARN"
-  value       = module.ecs_cluster.task_exec_iam_role_arn
+output "ecs_task_execution_role_arn" {
+  description = "ECS Task Execution Role ARN"
+  value       = aws_iam_role.ecs_task_execution_role.arn
 }
 
-output "task_exec_iam_role_unique_id" {
-  description = "Stable and unique string identifying the task execution IAM role"
-  value       = module.ecs_cluster.task_exec_iam_role_unique_id
+output "ecs_instance_profile_name" {
+  description = "Instance Profile Name"
+  value       = aws_iam_instance_profile.ecs_instance_profile.name
 }
-
 
 output "lb_arn" {
   value = module.alb.arn
