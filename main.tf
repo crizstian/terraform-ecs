@@ -366,7 +366,6 @@ module "alb" {
 
       health_check = {
         port                = "traffic-port"
-        protocol            = "TCP"
       }
 
       # There's nothing to attach here in this definition. Instead,
