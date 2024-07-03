@@ -350,7 +350,7 @@ module "alb" {
 
   listeners = {
     ex-tcp = {
-      port     = 83
+      port     = 80
       protocol = "TCP"
       forward = {
         target_group_key = "ex-target"
