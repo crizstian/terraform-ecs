@@ -32,7 +32,7 @@ locals {
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
-  name = "ecs_instance_role"
+  name = "ecs_crisdemo_instance_role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -55,12 +55,12 @@ resource "aws_iam_role" "ecs_instance_role" {
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "ecs_instance_profile"
+  name = "ecs_crisdemo_instance_profile"
   role = aws_iam_role.ecs_instance_role.name
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecs_task_execution_role"
+  name = "ecs_crisdemo_task_execution_role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -83,7 +83,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_role" "ecs_task_role" {
-  name = "ecs_task_role"
+  name = "ecs_crisdemo_task_role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
