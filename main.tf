@@ -370,3 +370,6 @@ output "lb_security_group_arn" {
 output "lb_security_group_id" {
   value = module.alb.security_group_id
 }
+output "lb_target_groups" {
+  value = module.alb.target_groups
+}
